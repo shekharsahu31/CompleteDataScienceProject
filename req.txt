@@ -1,0 +1,5 @@
+pandas
+numpy
+
+##-e . This will trigger setup.py automatically on calling pip install -r req.txt , but we commenting this out as we do not need to make packages
+       ## on every run of this , In last we will dis-comment it. Using this we do not req to run python setup.py install.
