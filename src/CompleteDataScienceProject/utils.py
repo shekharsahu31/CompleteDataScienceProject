@@ -6,19 +6,20 @@ import pandas as pd
 from dotenv import load_dotenv
 import pymysql
 
-'''load_dotenv()
+load_dotenv()
 host = os.getenv("host")
 user = os.getenv("user")
 password = os.getenv("password")
 db = os.getenv("db")
-port = os.getenv("port")
-print(host,user,password,db,port)'''
+port = int(os.getenv("port"))
 
-host = "127.0.0.1"
+print(host,user,password,db,port)
+
+'''host = "127.0.0.1"
 user = "root"
 password = "shekhar"
 db = "college"
-port = 3306
+port = 3306'''
 
 
 def read_sql_data():

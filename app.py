@@ -3,6 +3,8 @@ from src.CompleteDataScienceProject.logger import logging
 from src.CompleteDataScienceProject.exception import CustomException
 import sys
 from src.CompleteDataScienceProject.components.data_ingestion import DataIngestion,DataIngestionConfig
+from dotenv import load_dotenv
+import os
 
 if __name__ == "__main__":
     ## logging.INFO("YOYOYOYO HONEY SINGH")
@@ -15,7 +17,7 @@ if __name__ == "__main__":
 
         dataingestion = DataIngestion()
         train_data_path , test_data_path = dataingestion.initiate_data_ingestion()
-        
+          
 
 
     except Exception as e:
