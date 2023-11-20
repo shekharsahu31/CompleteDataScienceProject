@@ -39,7 +39,8 @@ for filepath in files:
     if (not os.path.exists(filepath)) or (os.path.getsize(filepath) == 0):
         with open(filepath,'w') as f:
             pass
-            logging.info(f"Creating empty file: {filepath}")
+            logging.info(f"Creating empty file: {filepath}")  ## Only creates a new file if the existing file is empty , 
+                                                              ## if there is some text , it skips it
     
     else:
         logging.info(f"{filename} is already exists")
