@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 from src.CompleteDataScienceProject.components.data_transformation import DataTransformationConfig, DataTransformation
+from src.CompleteDataScienceProject.components.model_tranier import Model_trainer, ModelTrainerConfig
 
 
 if __name__ == "__main__":
@@ -26,7 +27,10 @@ if __name__ == "__main__":
         print(df.info())'''
         datatransf = DataTransformation()
         train_arr,test_arr,trandformer_pickle_file_path = datatransf.initiate_data_transformation(raw_data_path , train_data_path , test_data_path)
-        print(trandformer_pickle_file_path)
+        #print(trandformer_pickle_file_path)
+        modeltrainer=Model_trainer()
+        modeltrainer.initiate_model_trainer(train_arr,test_arr)
+
 
     except Exception as e:
         #logging.info("Error Message/ Name - {}".format(e))
