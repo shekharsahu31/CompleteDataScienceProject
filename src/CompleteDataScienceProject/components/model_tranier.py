@@ -2,7 +2,11 @@ import pandas as pd
 import numpy as np
 from src.CompleteDataScienceProject.exception import CustomException
 from src.CompleteDataScienceProject.logger import logging
+from urllib.parse import urlparse
 from dataclasses import dataclass
+
+import dagshub
+
 import os
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.neighbors import KNeighborsRegressor
@@ -21,6 +25,8 @@ from catboost import CatBoostRegressor
 from xgboost import XGBRegressor
 import sys
 from src.CompleteDataScienceProject.utils import evaluate_models,save_pickle_object
+import mlflow
+import mlflow.sklearn
 
 
 @dataclass
@@ -32,12 +38,11 @@ class Model_trainer:
     def __init__(self):
         self.Model_trainer_config = ModelTrainerConfig()
 
-    def evaluate_model(true, predicted):
-        mae = mean_absolute_error(true, predicted)
-        mse = mean_squared_error(true, predicted)
-        rmse = np.sqrt(mean_squared_error(true, predicted))
-        r2_square = r2_score(true, predicted)
-        return mae, rmse, r2_square
+    def eval_model(self,actual, pred):
+        rmse = np.sqrt(mean_squared_error(actual, pred))
+        mae = mean_absolute_error(actual, pred)
+        r2 = r2_score(actual, pred)
+        return rmse, mae, r2
 
 
     def initiate_model_trainer(self,train_arr,test_arr):
@@ -133,7 +138,9 @@ class Model_trainer:
             print("This is the best model:")
             print(best_model_name)
 
-            '''model_names = list(params.keys())
+
+
+            model_names = list(params.keys())
 
             actual_model=""
 
@@ -144,7 +151,39 @@ class Model_trainer:
             best_params = params[actual_model]
 
             print("This is the best model params:")
-            print(best_params)'''
+            print(best_params)
+
+
+            #ML_FLOW+DAGSHUB---
+
+            mlflow.set_registry_uri("https://dagshub.com/shekharsahu31/CompleteDataScienceProject.mlflow")
+            tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+
+            #dagshub.init(repo_owner='shekharsahu31', repo_name='CompleteDataScienceProject', mlflow=True)
+
+            with mlflow.start_run():
+
+                predicted_qualities = best_model.predict(X_test)
+
+                rmse, mae, r2 = self.eval_model(y_test, predicted_qualities)
+
+                mlflow.log_params(best_params)
+
+                mlflow.log_metric("rmse", rmse)
+                mlflow.log_metric("r2", r2)
+                mlflow.log_metric("mae", mae)
+
+
+                # Model registry does not work with file store
+                if tracking_url_type_store != "file":
+
+                    # Register the model
+                    # There are other ways to use the Model Registry, which depends on the use case,
+                    # please refer to the doc for more information:
+                    # https://mlflow.org/docs/latest/model-registry.html#api-workflow
+                    mlflow.sklearn.log_model(best_model, "model", registered_model_name=actual_model)
+                else:
+                    mlflow.sklearn.log_model(best_model, "model")
 
             if best_model_score<0.6:
                 raise CustomException("No best model found")
@@ -152,8 +191,7 @@ class Model_trainer:
 
             save_pickle_object(
                 path=self.Model_trainer_config.model_pkl_path,
-                obj=best_model
-            )
+                obj=best_model)
 
             predicted=best_model.predict(X_test) #all models in models dict are fitted with data and with best parameters 
 

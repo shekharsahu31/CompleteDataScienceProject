@@ -9,6 +9,8 @@ matplotlib
 searborn
 catboost
 xgboost
+mlflow
+dagshub
 
 
 ##-e . This will trigger setup.py automatically on calling pip install -r req.txt , but we commenting this out as we do not need to make packages

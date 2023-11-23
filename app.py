@@ -29,8 +29,8 @@ if __name__ == "__main__":
         train_arr,test_arr,trandformer_pickle_file_path = datatransf.initiate_data_transformation(raw_data_path , train_data_path , test_data_path)
         #print(trandformer_pickle_file_path)
         modeltrainer=Model_trainer()
-        modeltrainer.initiate_model_trainer(train_arr,test_arr)
-
+        r2_score = modeltrainer.initiate_model_trainer(train_arr,test_arr)
+        print(f"R2_Score - {r2_score}")
 
     except Exception as e:
         #logging.info("Error Message/ Name - {}".format(e))

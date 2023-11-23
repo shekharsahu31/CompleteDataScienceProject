@@ -1,3 +1,19 @@
 ### https://www.youtube.com/playlist?list=PLTDARY42LDV7jzL_f68SY-eOQ9tY2lYvR ###
 
 ### https://github.com/krishnaik06/mlprojecthindi ###
+
+
+MLFLOW_TRACKING_URI=https://dagshub.com/shekharsahu31/CompleteDataScienceProject.mlflow \
+MLFLOW_TRACKING_USERNAME=shekharsahu31 \
+MLFLOW_TRACKING_PASSWORD=0cb0eedf039cf572be06483551f8be77d1e00124 \
+python script.py
+
+GIT BASH ->
+
+export MLFLOW_TRACKING_URI=https://dagshub.com/shekharsahu31/CompleteDataScienceProject.mlflow
+export MLFLOW_TRACKING_USERNAME=shekharsahu31
+export MLFLOW_TRACKING_PASSWORD=0cb0eedf039cf572be06483551f8be77d1e00124
+
+setx MLFLOW_TRACKING_URI https://dagshub.com/shekharsahu31/CompleteDataScienceProject.mlflow
+
+setx MLFLOW_TRACKING_USERNAME shekharsahu31
