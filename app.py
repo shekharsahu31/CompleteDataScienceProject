@@ -5,6 +5,9 @@ import sys
 from src.CompleteDataScienceProject.components.data_ingestion import DataIngestion,DataIngestionConfig
 from dotenv import load_dotenv
 import os
+import pandas as pd
+from src.CompleteDataScienceProject.components.data_transformation import DataTransformationConfig, DataTransformation
+
 
 if __name__ == "__main__":
     ## logging.INFO("YOYOYOYO HONEY SINGH")
@@ -16,11 +19,17 @@ if __name__ == "__main__":
         #dataingestion = DataIngestion(a)
 
         dataingestion = DataIngestion()
-        train_data_path , test_data_path = dataingestion.initiate_data_ingestion()
-          
-
+        raw_data_path , train_data_path , test_data_path = dataingestion.initiate_data_ingestion()
+        '''print(train_data_path)
+        print(test_data_path)
+        df = pd.read_csv(train_data_path)
+        print(df.info())'''
+        datatransf = DataTransformation()
+        train_arr,test_arr,trandformer_pickle_file_path = datatransf.initiate_data_transformation(raw_data_path , train_data_path , test_data_path)
+        print(trandformer_pickle_file_path)
 
     except Exception as e:
         #logging.info("Error Message/ Name - {}".format(e))
         #logging.info("Error Details - {}".format(sys))
         raise CustomException(e,sys)
+    
